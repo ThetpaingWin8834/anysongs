@@ -1,0 +1,44 @@
+import 'package:easy_localization/easy_localization.dart';
+
+class Mylocale {
+  static final String appName = 'app_name'.tr();
+  static final String description = 'description'.tr();
+  static final String permissionDenied = 'perminssion_denied'.tr();
+  static final String grantPermission = 'grant_permission'.tr();
+  static final String openSettings = 'open_settings'.tr();
+  static final String cannotOpenSettings = 'cannot_open_settings'.tr();
+  static final String home = 'home'.tr();
+  static final String search = 'search'.tr();
+  static final String download = 'download'.tr();
+  static final String songs = 'songs'.tr();
+  static final String sww = 'sww'.tr();
+  static final String noSongs = 'no_songs'.tr();
+  static final String rescan = 'rescan'.tr();
+  static final String shufflePlayback = 'shuffle_playback'.tr();
+  static final String favorites = 'favorites'.tr();
+  static final String playlists = 'playlists'.tr();
+  static final String albums = 'albums'.tr();
+  static final String createNewPlayList = 'create_new_playlist'.tr();
+  static final String createNew = 'create_new'.tr();
+  static final String enterPlaylistName = 'enter_playlist_name'.tr();
+  static final String emptyPlayList = 'empty_playlist'.tr();
+  static final String ok = 'ok'.tr();
+  static final String all = 'all'.tr();
+  static final String save = 'save'.tr();
+  static final String delete = 'delete'.tr();
+  static final String emptyAlbum = 'empty_album'.tr();
+  static final String cancel = 'cancel'.tr();
+  static final String addSongs = 'add_songs'.tr();
+  static final String notFound = 'not_found'.tr();
+  static final String sureDelete = 'sure_delete'.tr();
+  static final String localSongs = 'local_songs'.tr();
+  static final String youtube = 'youtube'.tr();
+  static final String retry = 'retry'.tr();
+  static final String playNow = 'play_now'.tr();
+  static final String loading = "loading".tr();
+  static final String quality = "quality".tr();
+  static final String size = "size".tr();
+  static final String listen = "listen".tr();
+  static final String play = "play".tr();
+  static final String sorry = "sorry".tr();
+}
