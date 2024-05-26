@@ -10,8 +10,8 @@ import 'package:anysongs/features/song_control/song_control_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_transform/stream_transform.dart';
 
-import '../playlist/playlist_screen.dart';
 import 'favorite/fav_screen.dart';
+import 'playlist/playlist_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

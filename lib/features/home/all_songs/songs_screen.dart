@@ -1,5 +1,6 @@
 import 'package:anysongs/core/extensions/context_exts.dart';
 import 'package:anysongs/core/locale/locale.dart';
+import 'package:anysongs/core/models/state.dart';
 import 'package:anysongs/core/player/player_manager.dart';
 import 'package:anysongs/core/widgets/shuffle_tile.dart';
 import 'package:anysongs/features/home/all_songs/cubit/all_songs_cubit.dart';
@@ -36,17 +37,16 @@ class _AllLocalSongsScreenState extends State<AllLocalSongsScreen>
         allSongsBloc.getAllSongs();
         await Future.delayed(const Duration(seconds: 2));
       },
-      child: BlocBuilder<AllSongsCubit, AllSongsState>(
+      child: BlocBuilder<AllSongsCubit, MyState<List<Song>>>(
         builder: (context, state) {
           return switch (state) {
-            AllSongsLoaded songs => LocalSongsList(
-                songs: songs.songs,
+            SuccessState<List<Song>> songs => LocalSongsList(
+                songs: songs.data,
               ),
-            AllSongsError error => MyError(
+            ErrorState error => MyError(
                 error: error.error,
               ),
-            AllSongsEmpty _ => const EmptySongs(),
-            AllSongsLoading _ => const Loading(),
+            LoadingState _ => const Loading(),
             _ => const SizedBox.shrink(),
           };
         },

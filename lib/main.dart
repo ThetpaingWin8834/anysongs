@@ -7,7 +7,6 @@ import 'package:anysongs/core/theme/theme.dart';
 import 'package:anysongs/core/utils/debug.dart';
 import 'package:anysongs/core/widgets/anim/overshooting_anim.dart';
 import 'package:anysongs/features/home/all_songs/cubit/all_songs_cubit.dart';
-import 'package:anysongs/features/home/cubit/home_cubit.dart';
 import 'package:anysongs/features/home/home_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -44,9 +43,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => HomeBloc(),
-        ),
         BlocProvider(
           create: (context) => AllSongsCubit(),
         ),
