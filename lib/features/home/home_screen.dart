@@ -3,13 +3,15 @@ import 'package:anysongs/core/locale/locale.dart';
 import 'package:anysongs/core/player/player_manager.dart';
 import 'package:anysongs/core/widgets/my_artwork_widget.dart';
 import 'package:anysongs/core/widgets/rotating_widget.dart';
+import 'package:anysongs/features/folder/folder.dart';
 import 'package:anysongs/features/home/album/album_screen.dart';
 import 'package:anysongs/features/home/all_songs/songs_screen.dart';
-import 'package:anysongs/features/home/favorite/fav_screen.dart';
-import 'package:anysongs/features/playlist/playlist_screen.dart';
 import 'package:anysongs/features/song_control/song_control_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_transform/stream_transform.dart';
+
+import '../playlist/playlist_screen.dart';
+import 'favorite/fav_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final TabController tabController = TabController(length: 4, vsync: this);
+    final TabController tabController = TabController(length: 5, vsync: this);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -46,6 +48,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Tab(
                 child: Text(Mylocale.albums),
               ),
+              Tab(
+                child: Text(Mylocale.folder),
+              ),
             ],
           ),
           Expanded(
@@ -54,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               FavScreen(),
               PlaylistScreen(),
               AlbumScreen(),
+              FolderScreen(),
             ]),
           ),
           const SongControlBar(),
@@ -74,14 +80,10 @@ class _SongControlBarState extends State<SongControlBar>
     with SingleTickerProviderStateMixin {
   late final AnimationController animationController =
       AnimationController(vsync: this, duration: const Duration(seconds: 6));
-  // late final homeBloc = context.read<HomeBloc>();
   final playerManager = PlayerManager();
   @override
   void initState() {
     super.initState();
-    // homeBloc.currentSong.listen((_) {
-    //   setState(() {});
-    // });
     playerManager.isPlaying.listen((playing) {
       setState(() {});
       if (playing) {

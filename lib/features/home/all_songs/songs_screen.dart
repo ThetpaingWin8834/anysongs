@@ -1,6 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:anysongs/core/extensions/context_exts.dart';
 import 'package:anysongs/core/locale/locale.dart';
+import 'package:anysongs/core/player/player_manager.dart';
+import 'package:anysongs/core/widgets/shuffle_tile.dart';
 import 'package:anysongs/features/home/all_songs/cubit/all_songs_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +41,6 @@ class _AllLocalSongsScreenState extends State<AllLocalSongsScreen>
           return switch (state) {
             AllSongsLoaded songs => LocalSongsList(
                 songs: songs.songs,
-                bloc: allSongsBloc,
               ),
             AllSongsError error => MyError(
                 error: error.error,
@@ -71,34 +71,43 @@ class EmptySongs extends StatelessWidget {
 
 class LocalSongsList extends StatelessWidget {
   final List<Song> songs;
-  final AllSongsCubit bloc;
   const LocalSongsList({
     Key? key,
     required this.songs,
-    required this.bloc,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final controller = OnAudioQuery();
     late final thumbSize = context.percentWidthOf(0.2);
-
+    final playerManager = PlayerManager();
     return StreamBuilder(
-      stream: bloc.currentSong,
-      builder: (context, snapshot) => ListView.builder(
-        itemCount: songs.length,
-        itemBuilder: (context, index) {
-          final song = songs[index];
-          return SongTile(
-            controller: controller,
-            song: song,
-            isCurrentSong: snapshot.data?.id == song.id,
-            thumbSize: thumbSize,
-            onTap: () {
-              bloc.onSongClick(songs, song);
+      stream: playerManager.currentSong,
+      builder: (context, snapshot) => Column(
+        children: [
+          ShuffleTile(
+            onShuffleClick: () {
+              playerManager.onShuffleClick(songs);
             },
-          );
-        },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: songs.length,
+              itemBuilder: (context, index) {
+                final song = songs[index];
+                return SongTile(
+                  controller: controller,
+                  song: song,
+                  isCurrentSong: snapshot.data?.id == song.id,
+                  thumbSize: thumbSize,
+                  onTap: () {
+                    playerManager.playAll(songs, song);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

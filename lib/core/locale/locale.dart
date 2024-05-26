@@ -18,6 +18,7 @@ class Mylocale {
   static final String favorites = 'favorites'.tr();
   static final String playlists = 'playlists'.tr();
   static final String albums = 'albums'.tr();
+  static final String folder = 'folder'.tr();
   static final String createNewPlayList = 'create_new_playlist'.tr();
   static final String createNew = 'create_new'.tr();
   static final String enterPlaylistName = 'enter_playlist_name'.tr();

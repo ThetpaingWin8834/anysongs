@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -38,36 +37,6 @@ class MyArtWorkWidget2 extends StatelessWidget {
               height: height,
               fit: BoxFit.cover,
             ),
-    );
-  }
-}
-
-class MyArtWorkWidget extends StatelessWidget {
-  final Future<Uint8List?> future;
-  final Widget? errorWidget;
-  final double width;
-  final double height;
-  const MyArtWorkWidget(
-      {Key? key,
-      required this.future,
-      this.errorWidget,
-      this.width = 50,
-      this.height = 50})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: future,
-      builder: (context, snapshot) => snapshot.hasData
-          ? Image.memory(
-              snapshot.data!,
-              width: width,
-              height: height,
-            )
-          : snapshot.hasError
-              ? errorWidget ?? const SizedBox.shrink()
-              : const SizedBox.shrink(),
     );
   }
 }

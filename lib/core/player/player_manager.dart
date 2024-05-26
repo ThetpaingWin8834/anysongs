@@ -57,9 +57,41 @@ class PlayerManager {
     }
   }
 
+  void onShuffleClick(
+    List<Song> songs,
+  ) async {
+    final isChanged = await didChangePlaylist(songs);
+    if (isChanged) {
+      await initPlayList(songs);
+    }
+
+    // await audioPlayer.shuffle();
+    await audioPlayer.setShuffleModeEnabled(true);
+    audioPlayer.play();
+  }
+
   void toggleSong() => audioPlayer.toggle();
-  void skipNext() => audioPlayer.seekToNext();
-  void skipPrevious() => audioPlayer.seekToPrevious();
+  void skipNext() {
+    audioPlayer.seekToNext();
+    if (!audioPlayer.playing) {
+      audioPlayer.play();
+    }
+  }
+
+  void skipPrevious() {
+    audioPlayer.seekToPrevious();
+    if (!audioPlayer.playing) {
+      audioPlayer.play();
+    }
+  }
+
+  void seekTo(double seconds) {
+    audioPlayer.seek(Duration(seconds: seconds.floor()));
+  }
+
+  void setShuffleMode(bool value) {
+    audioPlayer.setShuffleModeEnabled(value);
+  }
 
   Future<void> initPlayList(List<Song> songs) async {
     _identifier = (
