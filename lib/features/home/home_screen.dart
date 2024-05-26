@@ -24,6 +24,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final TabController tabController = TabController(length: 5, vsync: this);
+    final tabs = [
+      (
+        tab: Tab(child: Text(Mylocale.songs)),
+        widget: const AllLocalSongsScreen()
+      ),
+      (
+        tab: Tab(child: Text(Mylocale.playlists)),
+        widget: const PlaylistScreen()
+      ),
+      (tab: Tab(child: Text(Mylocale.favorites)), widget: const FavScreen()),
+      (tab: Tab(child: Text(Mylocale.albums)), widget: const AlbumScreen()),
+      (tab: Tab(child: Text(Mylocale.folder)), widget: const FolderScreen()),
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -35,32 +48,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           TabBar(
             isScrollable: true,
             controller: tabController,
-            tabs: [
-              Tab(
-                child: Text(Mylocale.songs),
-              ),
-              Tab(
-                child: Text(Mylocale.favorites),
-              ),
-              Tab(
-                child: Text(Mylocale.playlists),
-              ),
-              Tab(
-                child: Text(Mylocale.albums),
-              ),
-              Tab(
-                child: Text(Mylocale.folder),
-              ),
-            ],
+            tabs: tabs.map((e) => e.tab).toList(growable: false),
           ),
           Expanded(
-            child: TabBarView(controller: tabController, children: const [
-              AllLocalSongsScreen(),
-              FavScreen(),
-              PlaylistScreen(),
-              AlbumScreen(),
-              FolderScreen(),
-            ]),
+            child: TabBarView(
+                controller: tabController,
+                children: tabs.map((e) => e.widget).toList(growable: false)),
           ),
           const SongControlBar(),
         ],
