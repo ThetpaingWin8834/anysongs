@@ -3,15 +3,15 @@ import 'package:anysongs/core/locale/locale.dart';
 import 'package:anysongs/core/player/player_manager.dart';
 import 'package:anysongs/core/widgets/my_artwork_widget.dart';
 import 'package:anysongs/core/widgets/rotating_widget.dart';
-import 'package:anysongs/features/folder/folder.dart';
 import 'package:anysongs/features/home/album/album_screen.dart';
 import 'package:anysongs/features/home/all_songs/songs_screen.dart';
+import 'package:anysongs/features/home/folder/folder.dart';
 import 'package:anysongs/features/song_control/song_control_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import 'favorite/fav_screen.dart';
-import 'playlist/playlist_screen.dart';
+import 'playlist/screens/playlist_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -11,7 +11,7 @@ class Song {
   final String? artist;
   final int? dateAdded;
   final String? duration;
-  final String? uri;
+  final String uri;
 
   const Song({
     required this.id,
@@ -30,5 +30,5 @@ class Song {
       artist: model.artist,
       dateAdded: model.dateAdded,
       duration: model.duration == null ? null : formatTime(model.duration!),
-      uri: model.uri);
+      uri: model.uri!);
 }

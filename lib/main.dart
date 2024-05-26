@@ -8,6 +8,7 @@ import 'package:anysongs/core/utils/debug.dart';
 import 'package:anysongs/core/widgets/anim/overshooting_anim.dart';
 import 'package:anysongs/features/home/all_songs/cubit/all_songs_cubit.dart';
 import 'package:anysongs/features/home/home_screen.dart';
+import 'package:anysongs/features/home/playlist/cubit/playlist_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,6 +46,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AllSongsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PlaylistCubit(),
         ),
       ],
       child: MaterialApp(
@@ -128,7 +132,6 @@ class _PermissionCheckerState extends State<_PermissionChecker>
     try {
       final permission =
           await OnAudioQuery().queryDeviceInfo().then((deviceModel) {
-        mp(deviceModel.version);
         return deviceModel.version < 33 ? Permission.storage : Permission.audio;
       });
       final status = await permission.status;
@@ -149,7 +152,15 @@ class _PermissionCheckerState extends State<_PermissionChecker>
         shouldResumeCall = false;
 
         permission.request().then((status) {
-          if (status == PermissionStatus.denied) {
+          if (status == PermissionStatus.granted) {
+            animFinished.future.then((_) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ));
+            });
+          } else if (status == PermissionStatus.denied) {
             return checkPermission();
           } else if (status == PermissionStatus.permanentlyDenied) {
             return goAppSetting();
