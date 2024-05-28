@@ -23,6 +23,7 @@ class PlaylistManager {
 CREATE TABLE $songsOfPlaylist (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   playlistId INTEGER,
+  songId TEXT NOT NULL,
   title TEXT NOT NULL,
   thumb TEXT NOT NULL,
   artist TEXT,
@@ -40,6 +41,10 @@ CREATE TABLE $songsOfPlaylist (
     final result =
         await database.rawQuery('SELECT * FROM $playlistItemTableName');
     final playlistItems = result.map((e) => PlaylistItem.fromMap(e)).toList();
+    for (final item in playlistItems) {
+      final temp = await getAllSongsOfPlaylist(item.playlistId);
+      mp(temp.length);
+    }
     return PlaylistData(playlistItems: playlistItems);
   }
 
@@ -58,6 +63,10 @@ CREATE TABLE $songsOfPlaylist (
   Future<void> deletePlayList(int id) async {
     await database
         .rawDelete('DELETE FROM $playlistItemTableName WHERE id = $id');
+    await deleteSongFromPlaylist(id);
+    mp('deleted');
+    final songs = await getAllSongsOfPlaylist(id);
+    mp(songs.length);
   }
 
   Future<String> getPlaylistDatabasePath() async {
@@ -81,11 +90,41 @@ CREATE TABLE $songsOfPlaylist (
         id, songs.length, songs.first.thumb.toString());
   }
 
+  // Future<void> deleteAllSongs(int playlistId, List<Song> songs) async {
+  //   await Future.wait(songs.map((e) => deleteSongFromPlaylist(playlistId, e)));
+  // }
+
+  Future<List<Song?>> getAllSongsOfPlaylist(int id) async {
+    final result = await database
+        .rawQuery('SELECT * FROM $songsOfPlaylist WHERE playlistId = $id');
+    final songs = result.map((map) {
+      try {
+        return Song(
+            id: map['songId'] as String,
+            title: map['title'] as String,
+            thumb: Uri.tryParse(map['thumb'] as String),
+            artist: map['artist'] as String?,
+            dateAdded: map['dateAdded'] as int?,
+            duration: map['duration'] as String?,
+            uri: map['path'] as String);
+      } catch (e) {
+        return null;
+      }
+    }).toList();
+    return songs;
+  }
+
+  Future<void> deleteSongFromPlaylist(int id) async {
+    await database
+        .rawDelete('DELETE FROM $songsOfPlaylist WHERE playlistId = $id');
+  }
+
   Future<void> addSongToPlaylist(int id, Song song) async {
     await database.rawInsert(
-        'INSERT INTO $songsOfPlaylist (playlistId, title, thumb, artist, dateAdded, duration, path) VALUES (?,?,?,?,?,?,?)',
+        'INSERT INTO $songsOfPlaylist (playlistId, songId, title, thumb, artist, dateAdded, duration, path) VALUES (?,?,?,?,?,?,?,?)',
         [
           id,
+          song.id,
           song.title,
           song.thumb.toString(),
           song.artist,

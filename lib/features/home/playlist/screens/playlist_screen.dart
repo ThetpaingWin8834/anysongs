@@ -35,7 +35,6 @@ class _PlaylistScreenState extends State<PlaylistScreen>
     // super.build(context);
     return BlocBuilder<PlaylistCubit, MyState<PlaylistData>>(
       builder: (context, state) {
-        mp(state);
         return switch (state) {
           LoadingState _ => const Loading(),
           SuccessState<PlaylistData> success =>
@@ -258,20 +257,26 @@ class _PlaylistState extends State<_Playlist> {
                 onCreatePlaylistClick: onCreatePlaylistClick,
               ),
               Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200),
+                child: ListView.builder(
                   itemCount: widget.list.length,
                   itemBuilder: (context, index) {
                     final playlist = widget.list[index];
-                    return _PlaylistTile(
-                      model: playlist,
-                      onTap: () {
-                        // context.navigateToScreen(
-                        //   MyPlaylistViewScreen(playlistModel: playlist),
-                        // );
-                      },
-                      onLongTap: () {
+                    return ListTile(
+                      leading: SizedBox(
+                        width: context.percentWidthOf(0.2),
+                        height: context.percentWidthOf(0.2),
+                        child: MyArtWorkWidget2(
+                          uri: playlist.firstThumbUri == null ||
+                                  playlist.firstThumbUri!.isEmpty
+                              ? null
+                              : Uri.parse(playlist.firstThumbUri!),
+                          width: double.maxFinite,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      title: Text(playlist.playlistName),
+                      subtitle: Text(playlist.count.toString()),
+                      onLongPress: () {
                         final cubit = context.read<PlaylistCubit>();
 
                         cubit
