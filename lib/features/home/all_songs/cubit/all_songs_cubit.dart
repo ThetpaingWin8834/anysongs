@@ -13,9 +13,12 @@ class AllSongsCubit extends Cubit<MyState<List<Song>>> {
 
   BehaviorSubject<Song?> get currentSong => playerManager.currentSong;
 
-  void getAllSongs() async {
+  Future<void> getAllSongs() async {
     try {
-      emit(LoadingState());
+      if (state is! SuccessState ||
+          (state as SuccessState<List<Song>>).data.isEmpty) {
+        emit(LoadingState());
+      }
       final list = await localSongsRepo.getAllLocalSongs();
       final songs = <Song>[];
       for (var i = 0; i < list.length; i++) {

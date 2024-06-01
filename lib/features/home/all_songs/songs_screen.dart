@@ -2,6 +2,7 @@ import 'package:anysongs/core/extensions/context_exts.dart';
 import 'package:anysongs/core/locale/locale.dart';
 import 'package:anysongs/core/models/state.dart';
 import 'package:anysongs/core/player/player_manager.dart';
+import 'package:anysongs/core/utils/debug.dart';
 import 'package:anysongs/core/widgets/shuffle_tile.dart';
 import 'package:anysongs/features/home/all_songs/cubit/all_songs_cubit.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +34,11 @@ class _AllLocalSongsScreenState extends State<AllLocalSongsScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return RefreshIndicator(
-      onRefresh: () async {
-        allSongsBloc.getAllSongs();
-        await Future.delayed(const Duration(seconds: 2));
+      onRefresh: () {
+        context.showLoadingDialog();
+        mp(ModalRoute.of(context)?.settings.name);
+        allSongsBloc.getAllSongs().then((_) {});
+        return Future.delayed(Duration.zero);
       },
       child: BlocBuilder<AllSongsCubit, MyState<List<Song>>>(
         builder: (context, state) {

@@ -1,6 +1,6 @@
 {
     "app_name": "AnySongs",
-    "description":"From infinity to beyond",
+    "app_description":"From infinity to beyond",
     "perminssion_denied": "AnySongs need storage permissions to access all songs on your device .Make sure granted all !",
     "grant_permission":"Grant permissions",
     "open_settings": "Open settings",

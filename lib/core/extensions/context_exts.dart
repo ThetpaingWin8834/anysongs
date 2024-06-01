@@ -1,4 +1,8 @@
-import 'package:anysongs/core/widgets/blur_background.dart';
+import 'dart:ui';
+
+import 'package:anysongs/core/locale/locale.dart';
+import 'package:anysongs/core/widgets/blur/blur_background.dart';
+import 'package:anysongs/core/widgets/blur/frost_widget.dart';
 import 'package:flutter/material.dart';
 
 extension ContextExts on BuildContext {
@@ -7,6 +11,8 @@ extension ContextExts on BuildContext {
   TextTheme get textTheme => themeData.textTheme;
   MediaQueryData get mediaQueryData => MediaQuery.of(this);
   Size get size => mediaQueryData.size;
+  bool get isDarkMode =>
+      MediaQuery.of(this).platformBrightness == Brightness.dark;
   double percentWidthOf(double percent) => size.width * percent;
   double percentHeightOf(double percent) => size.height * percent;
   void showSnackBar(Widget content) {
@@ -33,6 +39,16 @@ extension ContextExts on BuildContext {
         ));
   }
 
+  void showLoadingDialog() {
+    showDialog(
+      context: this,
+      builder: (context) => FrostWidget(
+        child: Text(Mylocale.appDescription),
+      ),
+      barrierColor: Colors.transparent,
+    );
+  }
+
   void showSimpleDialog(
     String title,
     String message, {
@@ -51,6 +67,32 @@ extension ContextExts on BuildContext {
     );
   }
 
+  void showBlurDia({
+    String? title,
+    required Widget content,
+    List<Widget>? actions,
+    bool barrierDismissible = true,
+  }) {
+    showGeneralDialog(
+      barrierDismissible: barrierDismissible,
+      barrierColor: Colors.black38,
+      barrierLabel: title ?? DateTime.now().toString(),
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (ctx, _, __) => AlertDialog(
+        title: title == null ? null : Text(title),
+        content: content,
+        elevation: 2,
+        actions: actions,
+      ),
+      transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+        filter:
+            ImageFilter.blur(sigmaX: 3 * anim1.value, sigmaY: 3 * anim1.value),
+        child: child,
+      ),
+      context: this,
+    );
+  }
+
   void showBlurDialog({String? title, required List<Widget> childs}) {
     showDialog(
       context: this,
@@ -59,7 +101,7 @@ extension ContextExts on BuildContext {
         content: BlurBackground(
           padding: const EdgeInsets.all(16),
           borderRadius: BorderRadius.circular(10),
-          color: context.colorScheme.background.withOpacity(0.7),
+          // color: context.colorScheme.background.withOpacity(0.7),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,

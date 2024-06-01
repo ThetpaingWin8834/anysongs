@@ -11,6 +11,7 @@ import 'package:anysongs/features/home/home_screen.dart';
 import 'package:anysongs/features/home/playlist/cubit/playlist_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -19,11 +20,13 @@ import 'package:permission_handler/permission_handler.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.sirius.anysongs',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   );
+
   runApp(
     EasyLocalization(
       supportedLocales: const [
@@ -52,7 +55,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: Mylocale.description,
+        title: Mylocale.appDescription,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         theme: MyTheme.lightTheme,
@@ -81,6 +84,15 @@ class _PermissionCheckerState extends State<_PermissionChecker>
     WidgetsBinding.instance.addObserver(this);
     super.initState();
     checkPermission();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          systemNavigationBarColor: context.colorScheme.surface,
+          systemNavigationBarIconBrightness:
+              context.mediaQueryData.platformBrightness,
+        ),
+      );
+    });
   }
 
   @override
@@ -205,7 +217,7 @@ class _PermissionCheckerState extends State<_PermissionChecker>
               height: context.percentHeightOf(0.35),
             ),
           ),
-          Text(Mylocale.description),
+          Text(Mylocale.appDescription),
         ],
       ),
     );

@@ -216,7 +216,11 @@ class _PlaylistState extends State<_Playlist> {
           TextButton(
             onPressed: () {
               final name = textEditingController.text.trim();
-              if (name.isEmpty) return;
+              if (name.isEmpty) {
+                context.showSnackBar(Text(Mylocale.enterPlaylistName));
+                Navigator.pop(context);
+                return;
+              }
               final playlistCubit = context.read<PlaylistCubit>();
               playlistCubit.createNewPlayList(name).then((id) {
                 mp(id);
@@ -277,11 +281,7 @@ class _PlaylistState extends State<_Playlist> {
                       title: Text(playlist.playlistName),
                       subtitle: Text(playlist.count.toString()),
                       onLongPress: () {
-                        final cubit = context.read<PlaylistCubit>();
-
-                        cubit
-                            .deletePlayList(playlist.playlistId)
-                            .then((_) => cubit.getAllPlaylist());
+                        _onDeletePlaylist(playlist);
                       },
                     );
                   },
@@ -289,6 +289,32 @@ class _PlaylistState extends State<_Playlist> {
               ),
             ],
           );
+  }
+
+  void _onDeletePlaylist(PlaylistItem item) {
+    context.showBlurDia(
+        title: Mylocale.delete,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('${Mylocale.sureDelete} \'${item.playlistName}\''),
+          ],
+        ),
+        actions: [
+          SizedBox(
+            width: double.maxFinite,
+            child: FilledButton(
+              onPressed: () {
+                Navigator.pop(context);
+                final cubit = context.read<PlaylistCubit>();
+                cubit
+                    .deletePlayList(item.playlistId)
+                    .then((_) => cubit.getAllPlaylist());
+              },
+              child: Text(Mylocale.delete),
+            ),
+          ),
+        ]);
   }
 }
 

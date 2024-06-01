@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class Mylocale {
   static final String appName = 'app_name'.tr();
-  static final String description = 'description'.tr();
+  static String get appDescription => 'app_description'.tr();
   static final String permissionDenied = 'perminssion_denied'.tr();
   static final String grantPermission = 'grant_permission'.tr();
   static final String openSettings = 'open_settings'.tr();
