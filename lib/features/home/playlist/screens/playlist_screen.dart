@@ -8,6 +8,7 @@ import 'package:anysongs/core/widgets/loading.dart';
 import 'package:anysongs/core/widgets/my_artwork_widget.dart';
 import 'package:anysongs/features/home/playlist/models/playlist_data.dart';
 import 'package:anysongs/features/home/playlist/screens/playlist_songs_add_screen.dart';
+import 'package:anysongs/features/home/playlist/screens/playlist_view/playlist_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -162,9 +163,9 @@ class _PlaylistScreenState extends State<PlaylistScreen>
 class CreateNewPlaylistWidget extends StatelessWidget {
   final VoidCallback onCreatePlaylistClick;
   const CreateNewPlaylistWidget({
-    Key? key,
+    super.key,
     required this.onCreatePlaylistClick,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -266,22 +267,24 @@ class _PlaylistState extends State<_Playlist> {
                   itemBuilder: (context, index) {
                     final playlist = widget.list[index];
                     return ListTile(
-                      leading: SizedBox(
-                        width: context.percentWidthOf(0.2),
-                        height: context.percentWidthOf(0.2),
-                        child: MyArtWorkWidget2(
-                          uri: playlist.firstThumbUri == null ||
-                                  playlist.firstThumbUri!.isEmpty
-                              ? null
-                              : Uri.parse(playlist.firstThumbUri!),
-                          width: double.maxFinite,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
+                      leading: MyArtWorkWidget2(
+                        height: 50,
+                        uri: playlist.firstThumbUri == null ||
+                                playlist.firstThumbUri!.isEmpty
+                            ? null
+                            : Uri.parse(playlist.firstThumbUri!),
+                        width: 50,
+                        fit: BoxFit.cover,
+                        borderRadius: BorderRadius.circular(50),
                       ),
                       title: Text(playlist.playlistName),
                       subtitle: Text(playlist.count.toString()),
                       onLongPress: () {
                         _onDeletePlaylist(playlist);
+                      },
+                      onTap: () {
+                        context.navigateToScreen(
+                            PlaylistViewScreen(playlist: playlist));
                       },
                     );
                   },
@@ -323,11 +326,11 @@ class _PlaylistTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onLongTap;
   const _PlaylistTile({
-    Key? key,
+    super.key,
     required this.model,
     required this.onTap,
     required this.onLongTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -380,9 +383,9 @@ class _PlaylistTile extends StatelessWidget {
 class MyPlaylistViewScreen extends StatelessWidget {
   final PlaylistModel playlistModel;
   const MyPlaylistViewScreen({
-    Key? key,
+    super.key,
     required this.playlistModel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

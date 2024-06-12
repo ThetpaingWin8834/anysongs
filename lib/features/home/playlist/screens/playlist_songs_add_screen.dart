@@ -5,7 +5,6 @@ import 'package:anysongs/core/models/state.dart';
 import 'package:anysongs/features/home/playlist/cubit/playlist_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../core/models/song.dart';
 import '../../../../core/widgets/error.dart';
@@ -16,9 +15,9 @@ import '../../all_songs/cubit/all_songs_cubit.dart';
 class PlaylistSongsAddScreen extends StatefulWidget {
   final int playlistId;
   const PlaylistSongsAddScreen({
-    Key? key,
+    super.key,
     required this.playlistId,
-  }) : super(key: key);
+  });
 
   @override
   State<PlaylistSongsAddScreen> createState() => _PlaylistSongsAddScreenState();
@@ -102,15 +101,14 @@ class _SongList extends StatelessWidget {
   final List<Song> selectedSongs;
   final ValueSetter<Song> toggleSong;
   const _SongList({
-    Key? key,
+    super.key,
     required this.list,
     required this.selectedSongs,
     required this.toggleSong,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final controller = OnAudioQuery();
     late final thumbSize = context.percentWidthOf(0.2);
 
     return ListView.builder(
@@ -123,7 +121,6 @@ class _SongList extends StatelessWidget {
               ? context.colorScheme.primary.withOpacity(0.3)
               : null,
           child: SongTile(
-            controller: controller,
             song: song,
             isCurrentSong: false,
             thumbSize: thumbSize,

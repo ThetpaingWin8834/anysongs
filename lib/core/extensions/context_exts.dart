@@ -13,6 +13,7 @@ extension ContextExts on BuildContext {
   Size get size => mediaQueryData.size;
   bool get isDarkMode =>
       MediaQuery.of(this).platformBrightness == Brightness.dark;
+  double get defaultThumbSize => percentWidthOf(0.2);
   double percentWidthOf(double percent) => size.width * percent;
   double percentHeightOf(double percent) => size.height * percent;
   void showSnackBar(Widget content) {

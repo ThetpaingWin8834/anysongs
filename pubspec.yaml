@@ -16,7 +16,7 @@ dependencies:
   just_audio_background: ^0.0.1-beta.11
   on_audio_query: ^2.9.0
   path_provider: ^2.1.1
-  flutter_bloc: ^8.1.5
+  flutter_bloc: ^8.1.6
   easy_localization: ^3.0.5
   # app_settings: ^4.3.1
   # device_info_plus: ^9.1.2
@@ -29,11 +29,13 @@ dependencies:
   palette_generator: ^0.3.3+3
   marquee: ^2.2.3
   sqflite: ^2.3.3+1
+dependency_overrides:
+  fading_edge_scrollview: ^4.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.13.1
 
 

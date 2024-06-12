@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:anysongs/core/extensions/context_exts.dart';
+import 'package:anysongs/core/utils/debug.dart';
 import 'package:anysongs/core/widgets/my_artwork_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 import '../models/song.dart';
 
@@ -12,23 +12,28 @@ class SongTile extends StatelessWidget {
   final Song song;
   final bool isCurrentSong;
   final double thumbSize;
-  final OnAudioQuery? controller;
   final VoidCallback onTap;
   const SongTile({
-    Key? key,
+    super.key,
     required this.song,
     required this.isCurrentSong,
     required this.thumbSize,
-    this.controller,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
+    mp(thumbSize);
     return ListTile(
       dense: true,
       onTap: onTap,
-      leading: MyArtWorkWidget2(uri: song.thumb),
+      leading: MyArtWorkWidget2(
+        uri: song.thumb,
+        width: thumbSize,
+        height: thumbSize,
+        fit: BoxFit.fill,
+        borderRadius: BorderRadius.circular(thumbSize),
+      ),
       title: Text(
         song.title,
         maxLines: 2,

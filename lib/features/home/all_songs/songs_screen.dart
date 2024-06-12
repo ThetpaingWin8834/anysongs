@@ -7,7 +7,6 @@ import 'package:anysongs/core/widgets/shuffle_tile.dart';
 import 'package:anysongs/features/home/all_songs/cubit/all_songs_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../core/models/song.dart';
 import '../../../core/widgets/error.dart';
@@ -75,14 +74,13 @@ class EmptySongs extends StatelessWidget {
 class LocalSongsList extends StatelessWidget {
   final List<Song> songs;
   const LocalSongsList({
-    Key? key,
+    super.key,
     required this.songs,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final controller = OnAudioQuery();
-    late final thumbSize = context.percentWidthOf(0.2);
+    const thumbSize = 50.0;
     final playerManager = PlayerManager();
     return StreamBuilder(
       stream: playerManager.currentSong,
@@ -99,7 +97,6 @@ class LocalSongsList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final song = songs[index];
                 return SongTile(
-                  controller: controller,
                   song: song,
                   isCurrentSong: snapshot.data?.id == song.id,
                   thumbSize: thumbSize,

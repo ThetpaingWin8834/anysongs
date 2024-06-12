@@ -1,6 +1,7 @@
 import 'package:anysongs/core/extensions/context_exts.dart';
 import 'package:anysongs/core/locale/locale.dart';
 import 'package:anysongs/core/player/player_manager.dart';
+import 'package:anysongs/core/widgets/blur/frost_widget.dart';
 import 'package:anysongs/core/widgets/my_artwork_widget.dart';
 import 'package:anysongs/core/widgets/rotating_widget.dart';
 import 'package:anysongs/features/home/album/album_screen.dart';
@@ -38,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       (tab: Tab(child: Text(Mylocale.folder)), widget: const FolderScreen()),
     ];
     return Scaffold(
+      extendBody: true,
+      bottomNavigationBar: const SongControlBar(),
       appBar: AppBar(
         title: Text(
           Mylocale.appName,
@@ -55,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 controller: tabController,
                 children: tabs.map((e) => e.widget).toList(growable: false)),
           ),
-          const SongControlBar(),
         ],
       ),
     );
@@ -110,66 +112,76 @@ class _SongControlBarState extends State<SongControlBar>
                 const SongControlScreen(),
               );
             },
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: MyRotatingWidget(
-                    animationController: animationController,
-                    child: Hero(
-                      tag: currentPlayingSong,
-                      child: MyArtWorkWidget2(uri: currentPlayingSong.thumb),
-                    ),
-                  ),
+            child: FrostWidget(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 4,
                 ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10.0, top: 3),
-                          child: Text(
-                            currentPlayingSong.title,
-                            style: context.textTheme.bodySmall,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: MyRotatingWidget(
+                        animationController: animationController,
+                        child: Hero(
+                          tag: currentPlayingSong,
+                          child:
+                              MyArtWorkWidget2(uri: currentPlayingSong.thumb),
                         ),
                       ),
-                      if (currentPlayingSong.artist != null)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Text(
-                            currentPlayingSong.artist!,
-                            style: context.textTheme.bodySmall,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 3, left: 8),
+                            child: Text(
+                              currentPlayingSong.title,
+                              style: context.textTheme.bodySmall,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                    ],
-                  ),
+                          if (currentPlayingSong.artist != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 3.0, left: 8),
+                              child: Text(
+                                currentPlayingSong.artist!,
+                                style: context.textTheme.bodySmall
+                                    ?.copyWith(fontWeight: FontWeight.w300),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: playerManager.skipPrevious,
+                      icon: const Icon(
+                        Icons.skip_previous_rounded,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: playerManager.toggleSong,
+                      icon: Icon(
+                        isPlaying
+                            ? Icons.pause_rounded
+                            : Icons.play_arrow_rounded,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: playerManager.skipNext,
+                      icon: const Icon(
+                        Icons.skip_next_rounded,
+                      ),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  onPressed: playerManager.skipPrevious,
-                  icon: const Icon(
-                    Icons.skip_previous_rounded,
-                  ),
-                ),
-                IconButton(
-                  onPressed: playerManager.toggleSong,
-                  icon: Icon(
-                    isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                  ),
-                ),
-                IconButton(
-                  onPressed: playerManager.skipNext,
-                  icon: const Icon(
-                    Icons.skip_next_rounded,
-                  ),
-                ),
-              ],
+              ),
             ),
           );
         });

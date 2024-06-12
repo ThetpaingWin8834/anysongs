@@ -13,8 +13,8 @@ import 'package:palette_generator/palette_generator.dart';
 
 class SongControlScreen extends StatefulWidget {
   const SongControlScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SongControlScreen> createState() => _SongControlScreenState();
@@ -43,37 +43,40 @@ class _SongControlScreenState extends State<SongControlScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: _paletteColor?.color,
-      appBar: AppBar(
+    return AnimatedContainer(
+      duration: const Duration(seconds: 1),
+      child: Scaffold(
         backgroundColor: _paletteColor?.color,
-        leading: BackButton(
-          color: _paletteColor?.titleTextColor,
+        appBar: AppBar(
+          backgroundColor: _paletteColor?.color,
+          leading: BackButton(
+            color: _paletteColor?.titleTextColor,
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(
-              // flex: 4,
-              child: MyStreamWidget(
-                stream: playerManager.currentSong,
-                child: (currentSong) {
-                  return ControlHeader(
-                    song: currentSong!,
-                    paletteColor: _paletteColor,
-                  );
-                },
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Expanded(
+                // flex: 4,
+                child: MyStreamWidget(
+                  stream: playerManager.currentSong,
+                  child: (currentSong) {
+                    return ControlHeader(
+                      song: currentSong!,
+                      paletteColor: _paletteColor,
+                    );
+                  },
+                ),
               ),
-            ),
-            ControlSlider(
-                playerManager: playerManager, paletteColor: _paletteColor),
-            MediaControl(
-              playerManager: playerManager,
-              paletteColor: _paletteColor,
-            ),
-          ],
+              ControlSlider(
+                  playerManager: playerManager, paletteColor: _paletteColor),
+              MediaControl(
+                playerManager: playerManager,
+                paletteColor: _paletteColor,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -228,10 +231,10 @@ class MediaControl extends StatelessWidget {
   final PlayerManager playerManager;
   final PaletteColor? paletteColor;
   const MediaControl({
-    Key? key,
+    super.key,
     required this.playerManager,
     this.paletteColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -297,10 +300,10 @@ class ControlSlider extends StatelessWidget {
   final PlayerManager playerManager;
   final PaletteColor? paletteColor;
   const ControlSlider({
-    Key? key,
+    super.key,
     required this.playerManager,
     required this.paletteColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -346,10 +349,10 @@ class ControlHeader extends StatelessWidget {
   final Song song;
   final PaletteColor? paletteColor;
   const ControlHeader({
-    Key? key,
+    super.key,
     required this.song,
     this.paletteColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
